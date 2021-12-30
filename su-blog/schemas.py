@@ -13,7 +13,7 @@ class UserCreate(UserBase):
     
     
 class UserOut(UserBase):
-    email: str
+    email: EmailStr
     avatar_url: str
     github_url: str
     qq: str
@@ -40,4 +40,27 @@ class TokenData(BaseModel):
 
 class PwdBase(BaseModel):
     password: str
+    
+    
+class BlogBase(BaseModel):
+    title: str
+    chief_description: str
+    content: str
+    
+    
+class BlogCreate(BlogBase):
+    pass
+
+
+class BlogOut(BlogBase):
+    id: int
+    created_time: datetime
+    modified_time: Optional[datetime] = None
+    
+    class Config:
+        orm_mode = True
+        
+        
+class BlogUpdate(BlogBase):
+    pass
     
