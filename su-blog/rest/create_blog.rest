@@ -1,0 +1,9 @@
+POST http://localhost:8000/api/blogs HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVuY2xlLWx2IiwiZXhwIjoxNjQwODc4NzY0fQ.eE_djyNJU_Kahu6MPtFOAncrinh9zsUPG7qqFi7hTbI
+
+{
+  "title": "1.用静态工厂方法代替构造器",
+  "chief_description": "静态工厂方法有名字（增强了代码的可读性）不必在每次调用时都创建新的对象（提升性能）可以返回原类型的任何子类型对象（增大程序灵活性，减少API数量）返回的对象可以随着每次调用而发生变化（具体类型取决于传入的参数）在编写包含静态工厂方法的类时，返回的对象的所属类可以不存在",
+  "content": "第三个优点建议参考java.util.Collections中的源码，我在这里举一个简单的例子。首先写一个Person类，只写一个age属性，年龄必须大于0。再写一个内部类AdultPerson，内部类继承自Person，年龄不能小于18。分别为Person类和AdultPerson类提供一个静态工厂方法，返回值类型都为Person。这样做的好处就是我们不必知道AdultPerson类的存在，不必多写一个外部类，减少了API数量"
+}

@@ -1,0 +1,9 @@
+PATCH http://localhost:8000/api/blogs/5 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVuY2xlLWx2IiwiZXhwIjoxNjQwODgyNjM4fQ.8WJqup-p_-bDuQBGH7aL2fn9gHZSWRGa4JA6ezAb8NQ
+
+{
+  "title": "9. try-with-resources 优于 try-finally",
+  "chief_description": "可以看到，当程序离开 try-catch 代码块后， close() 方法被自动调用了。使用 try-with-sources 释放资源显然更简洁",
+  "content": "本书中提到的 try-with-resources 相较于 try-catch 的另一个优点是：try-catch 捕获异常时，只会抛出最后一个异常，而 try-with-resources 则会抛出所有异常。但我写了一下Demo之后发现 try-catch 现在也能抛出所有异常了（jdk 1.8以后），所以这个优势实际上已经不存在了。但即使没有这个优势， try-with-resources 显然还是要优于 try-catch"
+}
