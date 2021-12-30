@@ -22,6 +22,10 @@ class UserOut(UserBase):
         orm_mode = True
         
 
+class UserUpdate(UserOut):
+    pass
+        
+
 class TokenBase(BaseModel):
     token_type: str
     
@@ -32,4 +36,8 @@ class RefreshToken(TokenBase):
     
 class TokenData(BaseModel):
     username: Optional[str] = None
+    
+
+class PwdBase(BaseModel):
+    password: str
     

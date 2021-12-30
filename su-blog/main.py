@@ -1,9 +1,10 @@
 from datetime import timedelta
 
-from fastapi import FastAPI, Depends, status, HTTPException
+from fastapi import FastAPI, Depends, status, HTTPException, Body
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from jose import jwt, JWTError
+from starlette.status import HTTP_201_CREATED
 
 import database, schemas, models, crud, security
 
@@ -25,7 +26,7 @@ async def shutdown():
 def read_root():
     return {"Hello": "World"}
 
-@app.post('/api/login/oauth/access_token', status_code=status.HTTP_201_CREATED)
+@app.post('/api/oauth/access_token', status_code=status.HTTP_201_CREATED)
 async def create_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
     user = security.authenticate_user(form_data.username, form_data.password, db)
     if not user:
@@ -53,7 +54,7 @@ async def create_access_token(form_data: OAuth2PasswordRequestForm = Depends(), 
         }
 
 
-@app.post('/api/login/oauth/access_token/refresh')
+@app.post('/api/login/oauth/access_token/refresh', status_code=HTTP_201_CREATED)
 async def refresh_access_token(refresh_token: schemas.RefreshToken):
     username = None
     try:
@@ -86,6 +87,19 @@ async def refresh_access_token(refresh_token: schemas.RefreshToken):
     }
 
 
-@app.get('/api/auth/current_user', response_model=schemas.UserOut, status_code=status.HTTP_200_OK)
+@app.get('/api/oauth/current_user', response_model=schemas.UserOut, status_code=status.HTTP_200_OK)
 async def get_current_user(current_user: models.User = Depends(security.get_current_user)):
     return current_user
+
+
+@app.patch('/api/user', response_model=schemas.UserOut, status_code=status.HTTP_200_OK)
+async def update_user(user: schemas.UserUpdate, current_user: models.User = Depends(security.get_current_user), db: Session = Depends(database.get_db)):
+    crud.update_user(db, current_user.id, user)
+    return crud.get_user_id(db, current_user.id)
+
+
+@app.patch('/api/oauth/pwd', status_code=status.HTTP_200_OK)
+async def update_pwd(pwd: schemas.PwdBase, current_user: models.User = Depends(security.get_current_user), db: Session = Depends(database.get_db)):
+    crud.update_pwd(db, current_user.id, pwd.password)
+    return
+    

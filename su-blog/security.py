@@ -23,7 +23,7 @@ oauth2_scheme = OAuth2PasswordBearer(
     )
     
     
-def hash_password(password: str):
+def hash_pwd(password: str):
     return pwd_context.hash(password)
 
 def verify_password(raw_password: str, password):

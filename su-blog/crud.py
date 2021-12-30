@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlalchemy.orm import Session
 
-import models
+import models, security, schemas
 
 
 def get_user_id(db: Session, id: int):
@@ -16,4 +16,19 @@ def get_user_by_username(db: Session, username: str):
 
 def update_last_login(db: Session, id: int):
     db.query(models.User).filter(models.User.id==id).update(dict(last_login=datetime.utcnow()))
+    db.commit()
+    
+def update_pwd(db: Session, id: int, password: str):
+    hashed_pwd = security.hash_pwd(password)
+    db.query(models.User).filter(models.User.id==id).update(dict(password=hashed_pwd))
+    db.commit()
+    
+def update_user(db: Session, id: int, user: schemas.UserUpdate):
+    db.query(models.User).filter(models.User.id==id).update(dict(
+        username=user.username, 
+        email=user.email, 
+        avatar_url=user.avatar_url, 
+        github_url=user.github_url, 
+        qq=user.qq
+        ))
     db.commit()

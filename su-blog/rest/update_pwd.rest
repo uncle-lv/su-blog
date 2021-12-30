@@ -1,0 +1,7 @@
+PATCH http://localhost:8000/api/oauth/pwd HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVuY2xlLWx2IiwiZXhwIjoxNjQwODY3Mzg1fQ.t9I0odj6mHCNDGLODdw5KYrBE2WQYDCTg8f0HDjdrW4
+
+{
+    "password": "654321"
+}
