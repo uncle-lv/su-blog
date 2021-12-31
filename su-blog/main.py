@@ -1,6 +1,7 @@
 from datetime import timedelta
+from typing import List
 
-from fastapi import FastAPI, Depends, status, HTTPException, Body
+from fastapi import FastAPI, Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from jose import jwt, JWTError
@@ -98,13 +99,13 @@ async def update_pwd(pwd: schemas.PwdBase, current_user: models.User = Depends(s
     return
 
 
-@app.patch('/api/users', response_model=schemas.UserOut, status_code=status.HTTP_200_OK)
+@app.put('/api/users', response_model=schemas.UserOut, status_code=status.HTTP_200_OK)
 async def update_user(user: schemas.UserUpdate, current_user: models.User = Depends(security.get_current_user), db: Session = Depends(database.get_db)):
     crud.update_user(db, current_user.id, user)
     return crud.get_user_by_id(db, current_user.id)
 
 
-@app.get('/api/blogs', status_code=status.HTTP_200_OK)
+@app.get('/api/blogs', response_model=List[schemas.BlogOut], status_code=status.HTTP_200_OK)
 async def get_blogs(skip: int = 0, limit: int = 10, db: Session = Depends(database.get_db)):
     return crud.get_blogs(db, skip, limit)
 
@@ -126,7 +127,7 @@ async def create_blog(blog: schemas.BlogCreate, current_user: models.User = Depe
     return crud.create_blog(db, blog)
 
 
-@app.patch('/api/blogs/{id}', response_model=schemas.BlogOut, status_code=status.HTTP_200_OK)
+@app.put('/api/blogs/{id}', response_model=schemas.BlogOut, status_code=status.HTTP_200_OK)
 async def update_blog(blog: schemas.BlogUpdate, id: int, current_user: models.User = Depends(security.get_current_user), db: Session = Depends(database.get_db)):
     db_blog = crud.get_blog_by_id(db, id)
     if db_blog is None:
