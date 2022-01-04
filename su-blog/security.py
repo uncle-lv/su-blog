@@ -60,6 +60,9 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
             raise credentials_exception   
         token_data = schemas.TokenData(username=username)
     except JWTError:
+        if token is None:
+            raise credentials_exception
+        
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Signature has expired'
